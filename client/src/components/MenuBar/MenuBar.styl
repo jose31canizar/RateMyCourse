@@ -1,0 +1,56 @@
+height = 100vh
+menu-bar-background = white
+menu-bar-color = #7b728c
+menu-bar-text-color = #645e6f
+
+.menu-bar
+  @media all and(max-width: $mobile-width)
+    display: flex
+    z-index: -1
+    overflow: hidden
+    position: fixed
+
+  display: none
+  width: 100%
+  justify-content: space-around
+  flex-direction: column
+  align-items: left
+  height: $height
+  background: $menu-bar-background
+  position: fixed
+  z-index: -10
+  box-shadow: 0px 0px 0.5px 0.5px rgba(113 110 115 0.6)
+
+  .menu-bar-circle
+    width: 3vh
+    height: 3vh
+    border: 2px solid $menu-bar-color
+    border-radius: 50%
+    background: $menu-bar-background
+    transition: all 0.2s ease-in-out
+    z-index: 11
+
+  .menu-bar-circle:hover
+    border-radius: 10%
+    background: $menu-bar-color
+
+  .menu-bar-item
+    cursor: pointer
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 10px
+
+    h3
+      white-space: nowrap
+      color: $menu-bar-text-color
+      font-weight: 300
+      padding-left: 10px
+
+      @media all and(max-width: $skinny-mobile-width)
+        font-size: 1.5em
+
+  .menu-bar-item:hover
+    .menu-bar-circle
+      border-radius: 10%
+      background: $menu-bar-color

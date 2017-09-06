@@ -1,0 +1,34 @@
+@mixin slidein($t)
+-webkit-animation: slidein $t /* Safari, Chrome and Opera > 12.1 */
+   -moz-animation: slidein $t /* Firefox < 16 */
+    -ms-animation: slidein $t /* Internet Explorer */
+     -o-animation: slidein $t /* Opera < 12.1 */
+        animation: slidein $t
+
+
+@keyframes slidein
+  0%
+    transform: translate3d(-100vw, -43.1vh,0)
+
+  60%
+    transform: translate3d(-100vw, -43.1vh,0)
+
+  100%
+    transform: translate3d(0, -43.1vh,0)
+
+@mixin left-pane-slidein($t)
+-webkit-animation: left-pane-slidein $t /* Safari, Chrome and Opera > 12.1 */
+   -moz-animation: left-pane-slidein $t /* Firefox < 16 */
+    -ms-animation: left-pane-slidein $t /* Internet Explorer */
+     -o-animation: left-pane-slidein $t /* Opera < 12.1 */
+        animation: left-pane-slidein $t
+
+@keyframes left-pane-slidein
+  0%
+    transform: translate3d(-10vw, 0vh,0)
+
+  40%
+    transform: translate3d(-10vw, 0vh,0)
+
+  100%
+    transform: translate3d(0, 0vh,0)
