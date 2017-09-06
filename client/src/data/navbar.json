@@ -1,15 +1,15 @@
 [
   {
-    "title":"Quiz",
-    "route":"quiz"
+    "title":"Profile",
+    "route":"profile"
   },
   {
     "title":"About",
     "route":"about"
   },
   {
-    "title":"Score",
-    "route":"score"
+    "title":"Search",
+    "route":"search"
   },
   {
     "title":"Contact",
