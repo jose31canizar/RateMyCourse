@@ -1,10 +1,19 @@
 @import './variables.styl'
-// @import './Animations.styl'
+@import './Animations.styl'
 
-// @import '../components/Parallax/Parallax.styl'
 @import '../components/Header/Header.styl'
-// @import '../components/MenuBar/MenuBar.styl'
-// @import '../components/NavBar/NavBar.styl'
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Avenir.eot');
+  src: local('Avenir'),
+    url('../fonts/avenir.woff2') format('woff2'),
+    url('../fonts/Avenir.otf') format('otf'),
+    url('../fonts/avenir.ttf') format('ttf'),
+    url('../fonts/avenir.woff') format('woff')
+}
 
 html
   overflow-x: hidden
@@ -61,7 +70,8 @@ body
   li
   ul
   span
-    font-family: 'Poppins', sans-serif
+  input
+    font-family: 'Avenir', sans-serif
     font-weight: 100
     margin: 0
     padding: 0
@@ -69,7 +79,7 @@ body
     color: #555056
 
   li
-    font-family: 'Raleway', sans-serif
+    font-family: 'Avenir', sans-serif
     list-style: none
     color: #555056
 
