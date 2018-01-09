@@ -104,7 +104,7 @@ class App extends Component {
     } else if (this.state.courseSubject && this.state.courseNumber) {
       console.log(this.state.courseSubject);
       console.log(this.state.courseNumber);
-      
+
       this.setState({
         firstQuery: this.state.courseSubject,
         secondQuery: this.state.courseNumber

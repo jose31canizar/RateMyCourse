@@ -1,0 +1,98 @@
+[
+  {
+    "question":"Whats your archetype?",
+    "options": [
+      "somewhere",
+      "nowhere",
+      "a nice place",
+      "play soccer",
+      "workout",
+      "do yoga"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"I most like to think of myself as...",
+    "options": [
+      "Spiritual",
+      "Adventurous",
+      "Caring",
+      "Loving",
+      "Creative",
+      "Optimistic"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"My main overall goal in life is...",
+    "options": [
+      "To explore the world and myself",
+      "To transform others in a positive way",
+      "To connect with others",
+      "To find love",
+      "To start a revolution",
+      "Keeping myself and others safe"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"My biggest fear is...",
+    "options": [
+      "Appearing ungrateful or selfish",
+      "Standing out in a crowd",
+      "Being fooled into believing something that's not true",
+      "Feeling vulnerable or weak",
+      "Being alone or unwanted",
+      "Doing something wrong, and being unfairly punished"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"I love nothing more than to...",
+    "options": [
+      "Master a new technique or creative skill",
+      "Have a really great time",
+      "Shock people, or shake things up a bit",
+      "Realise I have a vision, then actually bring it to life",
+      "Explore new things",
+      "Be loved"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"My biggest downfall is...",
+    "options": [
+      "I let my heart rule my head, and sometimes it gets me into trouble",
+      "I sometimes feel like I blend in too much",
+      "I can be way too trusting",
+      "I can be way too trusting",
+      "I have a tendency to procrastinate, and suffer from extreme perfectionism",
+      "Sometimes I can smother those around me"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"My main strength is...",
+    "options": [
+      "My courage",
+      "My conviction",
+      "My realism",
+      "My optimism",
+      "My ambition",
+      "My love of responsibility"
+    ],
+    "answer":"sports"
+  },
+  {
+    "question":"I most like to feel...",
+    "options": [
+      "Daring",
+      "Powerful",
+      "Brave",
+      "Inventive",
+      "Down to earth",
+      "Sexy + attractive"
+    ],
+    "answer":"sports"
+  }
+]
