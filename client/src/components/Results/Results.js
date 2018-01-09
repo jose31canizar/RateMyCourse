@@ -13,6 +13,7 @@ export default class Results extends Component {
     this.getYear = this.getYear.bind(this)
     this.findAverageHours = this.findAverageHours.bind(this)
     this.findAverageGrade = this.findAverageGrade.bind(this)
+    this.displayQuery = this.displayQuery.bind(this)
   }
   componentWillReceiveProps(props) {
     this.setState({ results: props.courseSearchResults })
@@ -94,16 +95,25 @@ export default class Results extends Component {
     }
     return arr
   }
+  displayQuery() {
+    var first
+    if (this.props.firstQuery.toString()[0] === "2") {
+      first = this.getYear(this.props.firstQuery)
+    } else {
+      first = this.props.firstQuery
+    }
+    return first + " " + this.props.secondQuery
+  }
   render() {
     return (
       <div className='Results'>
         <video width={this.state.width} height={this.state.height} autoPlay loop>
           <source src={require("../../media/ratemycourse.mp4")} type="video/mp4"/>
         </video>
-        <h1>Results for {this.props.firstQuery.toString()[0] === 2 ? this.getYear(this.props.firstQuery) : this.props.firstQuery} {this.props.secondQuery}</h1>
+        <h1>Results for {this.props.firstQuery ? this.displayQuery() : '...'}</h1>
         {this.state.results.length ? this.state.results.map((course, i) => (
           <div className='course-cell' onMouseDown={this.goToCourse.bind(this, i)}>
-            <h2>{this.getYear(course.year)}</h2>
+            <h2>{course.courseSubject.toUpperCase() + " " + course.courseNumber + " " + this.getYear(course.year)}</h2>
             {this.ratingBar(course.courseRating)}
             <p>average grade: {this.findAverageGrade(course.averageGrade)}</p>
             <p>average hours: {this.findAverageHours(course.averageHours)}</p>

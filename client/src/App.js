@@ -44,14 +44,18 @@ class App extends Component {
   }
   updateCourseSubject(e) {
     var query = e.target.value
-    console.log('updating course subject');
-    console.log(query);
+    if(query === '') {
+      query = null
+    }
     this.setState({
       courseSubject: query.replace(/[0-9]/g, '')
     })
   }
   updateCourseNumber(e) {
     var query = e.target.value
+    if(query === '') {
+      query = null
+    }
     this.setState({
       courseNumber: query.replace(/\D/g,'')
     })
