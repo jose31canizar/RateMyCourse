@@ -66,7 +66,9 @@ class NavBar extends Component {
     return (
       <div className='nav-bar-wrapper'>
         <div className={'nav-bar' + (this.state.flip ? ' flip' : '')}>
-          <img src={require('../../media/RateMyCourseBlack.png')} alt='RateMyCourse'/>
+          <Link to="/">
+            <img src={require('../../media/RateMyCourseBlack.png')} alt='RateMyCourse'/>
+          </Link>
           {this.state.width > 800 ?
             <ul>
             {data.map((item, i) => (

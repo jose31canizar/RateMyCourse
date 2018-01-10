@@ -24,7 +24,7 @@ var connection;
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, '../client/', 'build')));
+app.use(express.static(path.resolve(__dirname, '../', 'build')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(cors());
@@ -104,13 +104,15 @@ app.get('/api/coursenumbersubject', (req, finalResult) => {
     return conn
   })
   .then((res) => {
-    var r = connection.query(`select YearTerm from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}'`)
+    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}'`)
     return r
   })
   .then((res) => {
-    res.map((year, i) => {
+    res.map((course, i) => {
       data.push({
-        year: year['YearTerm']
+        year: course['YearTerm'],
+        courseSubject: course['Subject'],
+        courseNumber: course['Course']
       })
     })
   })
@@ -171,7 +173,6 @@ app.get('/api/coursenumbersubject', (req, finalResult) => {
 
 app.get('/api/coursesubjectyear', (req, finalResult) => {
   var data = []
-  var data2 = []
   return mysql.createConnection({
     host: "104.198.161.89",
     user: "prototypeuser",
@@ -197,42 +198,125 @@ app.get('/api/coursesubjectyear', (req, finalResult) => {
   })
   .then((res0) => {
     const getDataAsync = (course) => {
-        var r = connection.query(`select avg(PCT_A),avg(PCT_B),avg(PCT_C),avg(PCT_DF) from GradeDistribution where Course='${course.courseNumber}' and Subject='${course.courseSubject}' and YearTerm='${req.query.year}'`)
-        return r.then((res) => {
-          return {
-            ...course,
-            gradesA: res[0]['avg(PCT_A)'],
-            gradesB: res[0]['avg(PCT_B)'],
-            gradesC: res[0]['avg(PCT_C)'],
-            gradesDF: res[0]['avg(PCT_DF)']
-          }
+      var r1 = connection.query(`select avg(PCT_A),avg(PCT_B),avg(PCT_C),avg(PCT_DF) from GradeDistribution where Course='${course.courseNumber}' and Subject='${course.courseSubject}' and YearTerm='${req.query.year}'`)
+      .then((res) => {
+        return {
+          gradesA: res[0]['avg(PCT_A)'],
+          gradesB: res[0]['avg(PCT_B)'],
+          gradesC: res[0]['avg(PCT_C)'],
+          gradesDF: res[0]['avg(PCT_DF)']
+        }
+      });
+      var r2 = connection.query(`select AverageGrade from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          averageGrade: res[0].AverageGrade
+        }
+      })
+      var r3 = connection.query(`select WorkloadRaw from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          averageHours: res[0].WorkloadRaw
+        }
+      })
+      var r4 = connection.query(`select avg(CourseRating) from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          courseRating: res[0]['avg(CourseRating)']
+        }
+      })
+
+        return Promise.join(r1, r2, r3, r4, function(res1, res2, res3, res4) {
+          console.log("done");
+          const result = {...course,...res1, ...res2, ...res3, ...res4}
+          console.log(result);
+          return result
         })
-        .then((res1) => {
-          var r = connection.query(`select AverageGrade from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
-          return r.then((res2) => {
-            return {
-              ...res1,
-              averageGrade: res2[0].AverageGrade
-            }
-          }).then((res1) => {
-            var r = connection.query(`select WorkloadRaw from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
-            return r.then((res2) => {
-              return {
-                ...res1,
-                averageHours: res2[0].WorkloadRaw
-              }
-            }).then((res1) => {
-              var r = connection.query(`select avg(CourseRating) from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
-              return r.then((res2) => {
-                return {
-                  ...res1,
-                  courseRating: res2[0]['avg(CourseRating)']
-                }
-              })
-            })
-          })
+    };
+
+    return new Promise(function(resolve, reject) {
+      Promise.map(data, function(course) {
+        return getDataAsync(course);
+      }).then(function(res) {
+        resolve(res)
+      });
+    });
+  })
+  .then((res) => {
+    finalResult.send(res)
+  })
+});
+
+
+
+
+
+
+
+app.get('/api/courseyearnumber', (req, finalResult) => {
+  var data = []
+  return mysql.createConnection({
+    host: "104.198.161.89",
+    user: "prototypeuser",
+    password: "flatiron",
+    database: "RateMyCourse"
+  }).then(function(conn){
+    connection = conn;
+    return conn
+  })
+  .then((res) => {
+    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where YearTerm='${req.query.year}' and Course='${req.query.number}'`)
+    return r
+  })
+  .then((res) => {
+    console.log('new data');
+    console.log(req.query);
+    console.log(res);
+    res.map((course) => {
+      data.push({
+        year: course['YearTerm'],
+        courseSubject: course['Subject'],
+        courseNumber: course['Course']
+      })
+    })
+  })
+  .then((res0) => {
+    const getDataAsync = (course) => {
+      var r1 = connection.query(`select avg(PCT_A),avg(PCT_B),avg(PCT_C),avg(PCT_DF) from GradeDistribution where Course='${course.courseNumber}' and Subject='${course.courseSubject}' and YearTerm='${req.query.year}'`)
+      .then((res) => {
+        return {
+          gradesA: res[0]['avg(PCT_A)'],
+          gradesB: res[0]['avg(PCT_B)'],
+          gradesC: res[0]['avg(PCT_C)'],
+          gradesDF: res[0]['avg(PCT_DF)']
+        }
+      });
+      var r2 = connection.query(`select AverageGrade from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          averageGrade: res[0].AverageGrade
+        }
+      })
+      var r3 = connection.query(`select WorkloadRaw from CourseDifficulty where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          averageHours: res[0].WorkloadRaw
+        }
+      })
+      var r4 = connection.query(`select avg(CourseRating) from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
+      .then((res) => {
+        return {
+          courseRating: res[0]['avg(CourseRating)']
+        }
+      })
+
+        return Promise.join(r1, r2, r3, r4, function(res1, res2, res3, res4) {
+          console.log("done with year & number");
+          const result = {...course,...res1, ...res2, ...res3, ...res4}
+          console.log(result);
+          return result
         })
-     };
+    };
 
     return new Promise(function(resolve, reject) {
       Promise.map(data, function(course) {

@@ -7,7 +7,7 @@ export default class Results extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      results: []
+      results: this.props.courseSearchResults
     }
     this.goToCourse = this.goToCourse.bind(this)
     this.getYear = this.getYear.bind(this)
@@ -27,7 +27,6 @@ export default class Results extends Component {
     this.props.handleQuery()
   }
   getYear(courseYear) {
-    console.log(courseYear);
     var year = courseYear.toString().slice(0, -1);
     var s = courseYear.toString()[4]
     var semester
@@ -107,13 +106,13 @@ export default class Results extends Component {
   render() {
     return (
       <div className='Results'>
-        <video width={this.state.width} height={this.state.height} autoPlay loop>
+        <video width={this.state.width} height={this.state.height} autoPlay playsInline muted loop>
           <source src={require("../../media/ratemycourse.mp4")} type="video/mp4"/>
         </video>
         <h1>Results for {this.props.firstQuery ? this.displayQuery() : '...'}</h1>
-        {this.state.results.length ? this.state.results.map((course, i) => (
+        {this.state.results ? this.state.results.map((course, i) => (
           <div className='course-cell' onMouseDown={this.goToCourse.bind(this, i)}>
-            <h2>{course.courseSubject.toUpperCase() + " " + course.courseNumber + " " + this.getYear(course.year)}</h2>
+            <h2>{course.courseSubject.toString().toUpperCase() + " " + course.courseNumber + " " + this.getYear(course.year)}</h2>
             {this.ratingBar(course.courseRating)}
             <p>average grade: {this.findAverageGrade(course.averageGrade)}</p>
             <p>average hours: {this.findAverageHours(course.averageHours)}</p>

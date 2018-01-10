@@ -30,9 +30,11 @@ class Course extends Component {
       height: h
     })
   }
+  componentDidUpdate(props) {
+    window.dispatchEvent(new Event('resize'));
+  }
   findAverageHours() {
     var num = this.props.averageHours
-    console.log(this.props.averageHours);
     switch (true) {
       case (num <= 0):
         return 'unknown'
@@ -91,7 +93,7 @@ class Course extends Component {
     var props = this.props
     return (
       <div className='Course'>
-        <video width={this.state.width} height={this.state.height} autoPlay loop>
+        <video width={this.state.width} height={this.state.height} autoPlay playsInline muted loop>
           <source src={require("../../media/ratemycourse.mp4")} type="video/mp4"/>
         </video>
         <div className='results-container'>

@@ -9,7 +9,7 @@ nav-bar-height = 100px
   top: 0
   left: 0
   width: 100%
-  z-index: 2
+  z-index: 3
 
 .nav-bar
   background: white
@@ -24,16 +24,18 @@ nav-bar-height = 100px
   align-items: center
   justify-content: center
   height: 100px
-  @media all and (max-width: 800px)
-    justify-content: flex-start
+  // @media all and (max-width: 800px)
+  //   justify-content: flex-start
   transform-origin: top
   transition: transform 0.5s ease
   -webkit-font-smoothing: antialiased
-  img
+  a
     height: 100%
-    padding: 10px
-    box-sizing: border-box
-    object-fit: contain
+    img
+      height: 100%
+      padding: 10px
+      box-sizing: border-box
+      object-fit: contain
   h1
     padding: 0px 15px
     font-weight: 900
@@ -42,7 +44,6 @@ nav-bar-height = 100px
     display: flex
     justify-content: flex-end
     align-items: center
-    height: nav-bar-height
     padding-right: 20px
 
     .nav-link:hover > .nav-item-above

@@ -26,7 +26,8 @@ class App extends Component {
       averageHours: null,
       courseRating: null,
       firstQuery: null,
-      secondQuery: null
+      secondQuery: null,
+      warning: ''
     }
     this.updateCourseSubject = this.updateCourseSubject.bind(this)
     this.updateCourseNumber = this.updateCourseNumber.bind(this)
@@ -45,25 +46,29 @@ class App extends Component {
   updateCourseSubject(e) {
     var query = e.target.value
     if(query === '') {
-      query = null
+      this.setState({
+        courseSubject: null
+      })
+    } else {
+      this.setState({
+        courseSubject: query.replace(/[0-9]/g, '')
+      })
     }
-    this.setState({
-      courseSubject: query.replace(/[0-9]/g, '')
-    })
   }
   updateCourseNumber(e) {
     var query = e.target.value
     if(query === '') {
-      query = null
+      this.setState({
+        courseNumber: null
+      })
+    } else {
+      this.setState({
+        courseNumber: query.replace(/\D/g,'')
+      })
     }
-    this.setState({
-      courseNumber: query.replace(/\D/g,'')
-    })
   }
   updateCourseYear(e) {
     var query = e.target.value
-    console.log(query);
-    console.log(query);
     const year = query.replace(/\D/g,'');
     const semester = query.split(" ")[0];
     if(semester === "Fall") {
@@ -80,7 +85,6 @@ class App extends Component {
     })
   }
   toggleCheckmark(i) {
-    console.log('toggling');
     this.setState((prevState, props) => {
       var prev = prevState.filters
       var check = !prevState.filters[i]
@@ -93,11 +97,20 @@ class App extends Component {
   navigateToCourse() {
     if (this.state.courseSubject && this.state.courseNumber && this.state.courseYear) {
       return '/course'
-    } else if (!this.state.courseSubject || !this.state.courseNumber || !this.state.courseYear) {
+    } else if (this.state.courseSubject && this.state.courseNumber) {
       return '/results'
+    } else if (this.state.courseSubject && this.state.courseYear) {
+      return '/results'
+    } else if (this.state.courseNumber && this.state.courseYear) {
+      return '/results'
+    } else {
+      return '/'
     }
   }
   handleQuery(e) {
+    this.setState({
+      warning: ''
+    })
     if(typeof e != 'undefined') {
         e.preventDefault()
     }
@@ -106,9 +119,6 @@ class App extends Component {
       this.searchCourse()
       //go to results page
     } else if (this.state.courseSubject && this.state.courseNumber) {
-      console.log(this.state.courseSubject);
-      console.log(this.state.courseNumber);
-
       this.setState({
         firstQuery: this.state.courseSubject,
         secondQuery: this.state.courseNumber
@@ -120,30 +130,30 @@ class App extends Component {
         secondQuery: this.state.courseSubject
       })
       this.searchForCoursesWithSubjectAndYear()
-    } else if (!this.state.courseNumber && !this.state.courseYear) {
+    } else if (this.state.courseNumber && this.state.courseYear) {
       this.setState({
-        firstQuery: this.state.courseNumber,
-        secondQuery: this.state.courseYear
+        firstQuery: this.state.courseYear,
+        secondQuery: this.state.courseNumber
       })
       this.searchForCoursesWithYearAndNumber()
+    } else {
+      this.setState({
+        warning: 'Please enter more info.'
+      })
     }
     return false
   }
   setCourseData = (data) => {
-    console.log('new data set');
-    console.log(data);
     this.setState({
       ...data
     })
   }
   searchCourse = () => {
-    console.log('searching course');
     fetch('/api/course?subject=' + this.state.courseSubject + '&number=' + this.state.courseNumber + '&year=' + this.state.courseYear)
     .then((res) => {
         return res.json()
       })
     .then((json) => {
-       console.log(json);
        this.setState({
          gradesA: json.gradesA,
          gradesB: json.gradesB,
@@ -161,57 +171,40 @@ class App extends Component {
     })
   }
   searchForCoursesWithSubjectAndNumber = () => {
-    console.log('searching with subject and number');
     fetch('/api/coursenumbersubject?subject=' + this.state.courseSubject + '&number=' + this.state.courseNumber)
     .then((res) => {
         return res.json()
       })
     .then((json) => {
-      console.log('searching for course list');
-      console.log(json);
-      json = json.map((course, i) => {
-        return {
-          ...course,
-          courseNumber: this.state.courseNumber,
-          courseSubject: this.state.courseSubject
-        }
-      })
-       this.setState({
-         courseSearchResults: json
-       });
-     })
+      this.setState({
+        courseSearchResults: json
+      });
+    })
     .catch(function(res){
       console.log('there was an error')
       console.log(res)
     })
   }
   searchForCoursesWithSubjectAndYear = () => {
-    console.log('searching with subject and year');
     fetch('/api/coursesubjectyear?&year=' + this.state.courseYear + '&subject=' + this.state.courseSubject)
     .then((res) => {
         return res.json()
       })
     .then((json) => {
-      console.log('searching for course list');
-      console.log(json);
-       this.setState({
-         courseSearchResults: json
-       });
-     })
+      this.setState({
+        courseSearchResults: json
+      });
+    })
     .catch(function(res){
-      console.log('there was an error')
       console.log(res)
     })
   }
   searchForCoursesWithYearAndNumber = () => {
-    console.log('searching with year and number');
     fetch('/api/courseyearnumber?&number=' + this.state.courseNumber + '&year=' + this.state.courseYear)
     .then((res) => {
         return res.json()
       })
     .then((json) => {
-      console.log('searching for course list');
-      console.log(json);
        this.setState({
          courseSearchResults: json
        });
