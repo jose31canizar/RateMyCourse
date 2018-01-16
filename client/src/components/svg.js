@@ -29,7 +29,7 @@ const svgs = {
 
 
 const SVG = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={props.width ? props.width : 24} height={props.height ? props.height : 24} fill={props.fill ? props.fill : 'white'} viewBox="0 0 24 24">
+  <svg className='svg-icon' xmlns="http://www.w3.org/2000/svg" width={props.width ? props.width : 24} height={props.height ? props.height : 24} fill={props.fill ? props.fill : 'white'} viewBox="0 0 24 24">
   {svgs[props.name]}
   </svg>
 );
