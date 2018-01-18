@@ -98,7 +98,7 @@ export default class Home extends Component {
               </BrowserDetection>
               <label>
               <input type="search" onChange={this.props.updateCourseYear} list="years" onKeyPress={this.handleKeyPress}/>
-              course year
+              course semester & year
               </label>
             </form>
             <p>{this.props.warning}</p>

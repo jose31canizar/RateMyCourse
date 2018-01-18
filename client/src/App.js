@@ -25,6 +25,7 @@ class App extends Component {
       averageGrade: null,
       averageHours: null,
       courseRating: null,
+      avgCourseRating: null,
       firstQuery: null,
       secondQuery: null,
       warning: ''
@@ -162,6 +163,7 @@ class App extends Component {
          averageGrade: json.averageGrade,
          averageHours: json.averageHours,
          courseRating: json.courseRating,
+         avgCourseRating: json.avgCourseRating,
          courseSearchResults: null
        });
      })

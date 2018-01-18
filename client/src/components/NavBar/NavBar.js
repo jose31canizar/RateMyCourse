@@ -69,7 +69,6 @@ class NavBar extends Component {
           <Link to="/">
             <img src={require('../../media/RateMyCourseBlack.png')} alt='RateMyCourse'/>
           </Link>
-          {this.state.width > 800 ?
             <ul>
             {data.map((item, i) => (
               <Link className="nav-link" to={`/${item.route}`} onMouseDown={this.setSelected.bind(this, item.title)}>
@@ -81,8 +80,7 @@ class NavBar extends Component {
                   </li>
               </Link>
             ))}
-            </ul> : ''}
-
+            </ul>
         </div>
       </div>
     );

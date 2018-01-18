@@ -79,10 +79,13 @@ export default class Results extends Component {
   }
   ratingBar(num) {
     var arr = []
+    console.log(num)
     if(!num) {
       arr.push(Array(6).fill(<SVG name={'EmptyStar'} width={50} height={50}/>))
     } else {
       var rating = parseInt(num)
+      console.log(rating)
+      
       var decimal = (num - Math.floor(num)).toFixed(1)
       arr = Array(rating).fill(<SVG name={'FilledStar'} width={50} height={50}/>)
       if(decimal >= 0.5) {
@@ -113,7 +116,10 @@ export default class Results extends Component {
         {this.state.results ? this.state.results.map((course, i) => (
           <div className='course-cell' onMouseDown={this.goToCourse.bind(this, i)}>
             <h2>{course.courseSubject.toString().toUpperCase() + " " + course.courseNumber + " " + this.getYear(course.year)}</h2>
-            {this.ratingBar(course.courseRating)}
+            <label>Rating for this course:</label>
+            {course.courseRating !== -1 ? this.ratingBar(course.courseRating) : <p>unknown</p>}
+            <label>Average rating for this course:</label>
+            {course.avgCourseRating !== -1 ? this.ratingBar(course.avgCourseRating) : <p>unknown</p>}
             <p>average grade: {this.findAverageGrade(course.averageGrade)}</p>
             <p>average hours: {this.findAverageHours(course.averageHours)}</p>
           </div>

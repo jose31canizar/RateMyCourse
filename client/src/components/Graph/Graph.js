@@ -52,7 +52,7 @@ class Graph extends Component {
     //Width and height
     // var w = 500;
     // var h = 500;
-    var w = this.state.width / 3
+    var w = this.state.width
     var h = 200
 
     const faux = new Faux.Element('div');

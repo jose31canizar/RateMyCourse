@@ -71,8 +71,8 @@ class Course extends Component {
         return 'unknown'
     }
   }
-  ratingBar() {
-    var num = this.props.courseRating
+  ratingBar(rating) {
+    var num = rating
     var arr = []
     if(!num) {
       arr.push(Array(6).fill(<SVG name={'EmptyStar'} width={50} height={50}/>))
@@ -100,7 +100,11 @@ class Course extends Component {
           <h1>{props.courseSubject.toUpperCase() + ' ' + props.courseNumber}</h1>
           <div className='course-rating'>
             <h2>Course Rating</h2>
-            {this.ratingBar()}
+            {this.ratingBar(this.props.courseRating)}
+          </div>
+          <div className='course-rating'>
+            <h2>Average Course Rating</h2>
+            {this.ratingBar(this.props.avgCourseRating)}
           </div>
           <h2>A's: {parseFloat(props.gradesA).toFixed(2)}%</h2>
           <h2>B's: {parseFloat(props.gradesB).toFixed(2)}%</h2>

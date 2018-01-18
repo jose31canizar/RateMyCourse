@@ -48,6 +48,7 @@ app.get('/api/course', (req, finalResult) => {
       gradesDF: null,
       averageGrade: null,
       averageHours: null,
+      avgCourseRating: null,
       courseRating: null
     };
 
@@ -61,7 +62,7 @@ app.get('/api/course', (req, finalResult) => {
     connection = conn;
     return conn
   }).then((conn) => {
-      var r = connection.query(`select avg(PCT_A),avg(PCT_B),avg(PCT_C),avg(PCT_DF) from GradeDistribution where Course='${req.query.number}' and Subject='${req.query.subject}'`)
+      var r = connection.query(`select avg(PCT_A),avg(PCT_B),avg(PCT_C),avg(PCT_DF) from GradeDistribution where Course='${req.query.number}' and Subject='${req.query.subject}' and YearTerm='${req.query.year}'`)
       return r
   })
   .then((res) => {
@@ -85,7 +86,14 @@ app.get('/api/course', (req, finalResult) => {
     return r
   })
   .then((res) => {
-    data.courseRating = res[0]['avg(CourseRating)']
+    data.avgCourseRating = res[0]['avg(CourseRating)']
+  })
+  .then((res) => {
+    var r = connection.query(`select CourseRating from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}' and YearTerm='${req.query.year}'`)
+    return r
+  })
+  .then((res) => {
+    data.courseRating = res[0]['CourseRating']
   })
   .then((res) => {
     finalResult.send(data)
@@ -104,7 +112,7 @@ app.get('/api/coursenumbersubject', (req, finalResult) => {
     return conn
   })
   .then((res) => {
-    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}'`)
+    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}' ORDER BY YearTerm DESC`)
     return r
   })
   .then((res) => {
@@ -159,20 +167,43 @@ app.get('/api/coursenumbersubject', (req, finalResult) => {
     data = data.map((course, i) => {
       return {
         ...course,
-        courseRating: res[0]['avg(CourseRating)']
+        avgCourseRating: res[0]['avg(CourseRating)']
       }
     })
+  }).then((res) => {    
+    const getDataAsync = (course) => {
+      const r = connection.query(`select CourseRating from CourseRating where Course='${req.query.number}' and Subject='${req.query.subject}' and YearTerm='${course.year}'`)
+      .then((res1) => {
+          console.log(res1)
+          return {
+            ...course,
+            courseRating: res1[0]['CourseRating']
+          }
+      })
+      return r
+    };
+
+    return new Promise(function(resolve, reject) {
+      Promise.map(data, function(course) {
+        return getDataAsync(course);
+      }).then(function(res) {
+        resolve(res)
+      });
+    });
   })
   .then((res) => {
     console.log('final for course list');
-    console.log(data);
-    finalResult.send(data)
+    console.log(res)
+    // console.log(data);
+    // finalResult.send(data)
+    finalResult.send(res)
   })
 });
 
 
 app.get('/api/coursesubjectyear', (req, finalResult) => {
   var data = []
+  console.log('subject & year')
   return mysql.createConnection({
     host: "104.198.161.89",
     user: "prototypeuser",
@@ -183,11 +214,12 @@ app.get('/api/coursesubjectyear', (req, finalResult) => {
     return conn
   })
   .then((res) => {
-    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where YearTerm='${req.query.year}' and Subject='${req.query.subject}'`)
+    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where YearTerm='${req.query.year}' and Subject='${req.query.subject}' ORDER BY YearTerm DESC`)
     return r
   })
   .then((res) => {
     console.log('course numbers');
+    console.log(res);
     res.map((course) => {
       data.push({
         year: course['YearTerm'],
@@ -222,7 +254,13 @@ app.get('/api/coursesubjectyear', (req, finalResult) => {
       var r4 = connection.query(`select avg(CourseRating) from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
       .then((res) => {
         return {
-          courseRating: res[0]['avg(CourseRating)']
+          avgCourseRating: res[0]['avg(CourseRating)']
+        }
+      })
+      var r5 = connection.query(`select CourseRating from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}' and YearTerm='${req.query.year}'`)
+      .then((res) => {
+        return {
+          courseRating: res[0]['CourseRating']
         }
       })
 
@@ -265,7 +303,7 @@ app.get('/api/courseyearnumber', (req, finalResult) => {
     return conn
   })
   .then((res) => {
-    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where YearTerm='${req.query.year}' and Course='${req.query.number}'`)
+    var r = connection.query(`select Course,Subject,YearTerm from CourseRating where YearTerm='${req.query.year}' and Course='${req.query.number}' ORDER BY YearTerm DESC`)
     return r
   })
   .then((res) => {
@@ -306,16 +344,22 @@ app.get('/api/courseyearnumber', (req, finalResult) => {
       var r4 = connection.query(`select avg(CourseRating) from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}'`)
       .then((res) => {
         return {
-          courseRating: res[0]['avg(CourseRating)']
+          avgCourseRating: res[0]['avg(CourseRating)']
+        }
+      })
+      var r5 = connection.query(`select CourseRating from CourseRating where Course='${course.courseNumber}' and Subject='${course.courseSubject}' and YearTerm='${req.query.year}'`)
+      .then((res) => {
+        return {
+          avgCourseRating: res[0]['CourseRating']
         }
       })
 
-        return Promise.join(r1, r2, r3, r4, function(res1, res2, res3, res4) {
-          console.log("done with year & number");
-          const result = {...course,...res1, ...res2, ...res3, ...res4}
-          console.log(result);
-          return result
-        })
+      return Promise.join(r1, r2, r3, r4, function(res1, res2, res3, res4) {
+        console.log("done with year & number");
+        const result = {...course,...res1, ...res2, ...res3, ...res4}
+        console.log(result);
+        return result
+      })
     };
 
     return new Promise(function(resolve, reject) {
