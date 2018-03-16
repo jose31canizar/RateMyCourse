@@ -1,7 +1,5 @@
 node_modules
 .env
 *.mp4
-<<<<<<< HEAD
 client/src/fonts/
-=======
->>>>>>> 65b62098d3f3f58621410382225dc9dce0b4e51f
+/build
