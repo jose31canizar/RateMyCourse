@@ -6,8 +6,15 @@
   align-items: center
   flex-direction: column
   margin-top: 100px
+  z-index: 1
+  position: absolute
+  top: 30px
+  overflow-y: scroll
+  @media all and (max-width: 1200px)
+    top: 60px
   video
     position: absolute
+    pointer-events: none
     top: 100px
     z-index: -1
     object-fit: cover
@@ -42,7 +49,7 @@
           color: #e4cdcd
         p:nth-of-type(6)
           color: #e4cdcd
-        
+
   .v1
     width: 50%
     margin: 50px 0
@@ -73,7 +80,7 @@
         p:nth-of-type(10)
           color: #e4cdcd
           grid-column: 2
-          grid-row: 3
+          grid-row: 5
         p:nth-of-type(7)
           color: #e4cdcd
           grid-column: 2
@@ -81,4 +88,4 @@
         p:nth-of-type(9)
           color: #e4cdcd
           grid-column: 2
-          grid-row: 5
+          grid-row: 3
