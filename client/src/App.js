@@ -19,7 +19,7 @@ class App extends Component {
       courseNumber: null,
       courseSubject: null,
       courseYear: null,
-      filters: Data.map((filter, i) => (i == 0 ? true : false)),
+      filters: Data.map((filter, i) => (i === 0 ? true : false)),
       numEnrolled: null,
       professorRating: null,
       gradesA: null,
@@ -141,7 +141,7 @@ class App extends Component {
     this.setState({
       warning: ""
     });
-    if (typeof e != "undefined") {
+    if (typeof e !== "undefined") {
       e.preventDefault();
     }
     //go to single course
@@ -311,10 +311,17 @@ class App extends Component {
                     history={history}
                     handleQuery={this.handleQuery}
                     width={this.state.width}
+                    height={this.state.height}
                   />
                 )}
               />
-              <Route exact path="/about" render={({ history }) => <About />} />
+              <Route
+                exact
+                path="/about"
+                render={({ history }) => (
+                  <About width={this.state.width} height={this.state.height} />
+                )}
+              />
               <Route
                 path="*"
                 render={({ history }) => (

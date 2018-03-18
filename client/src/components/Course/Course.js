@@ -15,6 +15,16 @@ class Course extends Component {
     this.ratingBar = this.ratingBar.bind(this);
   }
   componentDidMount() {
+    document
+      .getElementById("course-page")
+      .addEventListener("touchmove", function(event) {
+        event.stopPropagation();
+      });
+
+    document
+      .getElementById("course-page")
+      .setAttribute("style", "-webkit-overflow-scrolling: touch");
+
     const w = Math.max(document.body.clientWidth, window.innerWidth || 0);
     const h = Math.max(document.body.clientHeight, window.innerHeight || 0);
     window.addEventListener("resize", () => {
@@ -104,7 +114,7 @@ class Course extends Component {
   render() {
     var props = this.props;
     return (
-      <div className="Course">
+      <div className="Course" id="course-page">
         <div className="results-container">
           <h1>
             {props.courseSubject.toUpperCase() + " " + props.courseNumber}

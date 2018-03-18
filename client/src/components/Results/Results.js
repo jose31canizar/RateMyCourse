@@ -24,6 +24,15 @@ export default class Results extends Component {
     this.props.history.push("course");
   }
   componentDidMount() {
+    document
+      .getElementById("results-list")
+      .addEventListener("touchmove", function(event) {
+        event.stopPropagation();
+      });
+
+    document
+      .getElementById("results-list")
+      .setAttribute("style", "-webkit-overflow-scrolling: touch");
     this.props.handleQuery();
   }
   getYear(courseYear) {
@@ -118,7 +127,11 @@ export default class Results extends Component {
   }
   render() {
     return (
-      <div className="Results" style={{ height: this.props.height - 100 }}>
+      <div
+        className="Results"
+        id="results-list"
+        style={{ height: this.props.height - 100 }}
+      >
         <h1>
           Results for {this.props.firstQuery ? this.displayQuery() : "..."}
         </h1>
@@ -127,6 +140,7 @@ export default class Results extends Component {
             <div
               className="course-cell"
               onMouseDown={this.goToCourse.bind(this, i)}
+              key={i}
             >
               <h2>
                 {course.courseSubject.toString().toUpperCase() +

@@ -1,0 +1,46 @@
+TABLE GradeDistribution
+Subject - Subject Acronym
+Course - Four digit course number
+AVG_GRD - Average grade assigned
+PCT_A - Percent of students that received an A
+PCT_B - Percent of students that received an B
+PCT_C - Percent of students that received an C
+PCT_D - Percent of students that received an D
+PCT_F - Percent of students that received an F
+PCT_C_MINUS_OR_BELOW - Percent of students that received C- or below
+PCT_DF - Percent of students that received a D or an F
+PCT_WDRAW - Percent of students who withdrew
+PCT_INCOMP - Percent incomplete (of end-of-term)
+N_PASS - Number enrolled as pass/fail and passing
+N_NOCRED - Number enrolled for no credit
+N_INCOMP - Number incomplete at end of term
+YearTerm - YEAR/TERM (YYT format. YY=two digit year. T = term, in SIS syntax. 1 = Spring, 4 = Summer, 7 = Fall)
+
+TABLE CourseName
+Subject - Subject Acronym
+Course - Four digit course number
+CourseTitle - Course title (for the term)
+YearTerm - YEAR/TERM (YYT format. YY=two digit year. T = term, in SIS syntax. 1 = Spring, 4 = Summer, 7 = Fall)
+Level - Course level: Lower Division, Upper Division, Grad
+CourseLevelNum - Course level number: first digit of course number + XXX (i.e. PSCY1234 has a course level number of 1XXX)
+ActivityType - Activity type (method of instruction) code and label, e.g. LECTURE
+InstructionMode - Instruction mode, code and label, e.g. 'In Person', 'Online'
+Hours - Course credit hours (added summer 2012)
+NumEnrolled - number at end of term + withdrawn
+
+TABLE CourseRating 
+Subject - Subject Acronym
+Course - Four digit course number
+CourseRating - Course rating overall (added fall 06 FCQ)
+AverageProfRating - Instructor Rating overall (added fall 06 FCQ)
+ProfessorName - Professor name
+YearTerm - YEAR/TERM (YYT format. YY=two digit year. T = term, in SIS syntax. 1 = Spring, 4 = Summer, 7 = Fall)
+
+TABLE CourseDifficulty
+Subject - Subject Acronym
+Course - Four digit course number
+AverageGrade - average grade assigned
+AverageHours - Hours/week spent on course for all course-related work including attending classes, labs, recitations, readings, reviewing notes, writing papers, etc. (added fall 06 FCQ)
+	Rating in hours/week.  0-3 hours = Avg 0 - 1.5, 4-6 hours = Avg 1.5 - 2.5, 7-9 hours = Avg 2.5 - 3.5, 10-12 hours= 3.5 - 4.5, 13-15 hours= 4.5-5.5, 16+ hours = 5.5 - 6
+WorkloadRaw - Hours/Week spent on course for all course-related work including attending classes, labs, recitations, readings, reviewing notes, writing papers, etc. (added fall 06 FCQ)
+	Raw score average 1 = 0-3, 2 = 4-6, 3 = 7-9, 4 = 10-12, 5 = 13-15, 6 = 16+

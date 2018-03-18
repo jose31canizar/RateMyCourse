@@ -47,7 +47,9 @@ export default class Home extends Component {
       chrome: () => (
         <datalist id="subjects">
           <select>
-            {SUBJECTS.map((subject, i) => <option value={subject.subject} />)}
+            {SUBJECTS.map((subject, i) => (
+              <option value={subject.subject} key={i} />
+            ))}
           </select>
         </datalist>
       ),
@@ -59,7 +61,7 @@ export default class Home extends Component {
       chrome: () => (
         <datalist id="years">
           <select>
-            {YEARS.map((year, i) => <option value={year.year} />)}
+            {YEARS.map((year, i) => <option value={year.year} key={i} />)}
           </select>
         </datalist>
       ),

@@ -10,6 +10,12 @@ export default class About extends Component {
     };
   }
   componentDidMount() {
+    document
+      .getElementById("about-page")
+      .addEventListener("touchmove", function(event) {
+        event.stopPropagation();
+      });
+
     const w = Math.max(document.body.clientWidth, window.innerWidth || 0);
     const h = Math.max(document.body.clientHeight, window.innerHeight || 0);
     window.addEventListener("resize", () => {
@@ -27,7 +33,11 @@ export default class About extends Component {
   }
   render() {
     return (
-      <div className="About">
+      <div
+        className="About"
+        id="about-page"
+        style={{ height: this.props.height - 100 }}
+      >
         <h2>About Us</h2>
         <p>RateMyCourse is a collaborative project based in Boulder, CO.</p>
         <div className="v2">
