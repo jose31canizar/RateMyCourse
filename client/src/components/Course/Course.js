@@ -15,11 +15,11 @@ class Course extends Component {
     this.ratingBar = this.ratingBar.bind(this);
   }
   componentDidMount() {
-    document
-      .getElementById("course-page")
-      .addEventListener("touchmove", function(event) {
-        event.stopPropagation();
-      });
+    // document
+    //   .getElementById("course-page")
+    //   .addEventListener("touchmove", function(event) {
+    //     event.stopPropagation();
+    //   });
 
     document
       .getElementById("course-page")
@@ -39,9 +39,6 @@ class Course extends Component {
       width: w,
       height: h
     });
-  }
-  componentDidUpdate(props) {
-    window.dispatchEvent(new Event("resize"));
   }
   findAverageHours() {
     var num = this.props.averageHours;

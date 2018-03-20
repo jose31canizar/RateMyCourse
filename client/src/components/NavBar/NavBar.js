@@ -76,7 +76,7 @@ class NavBar extends Component {
               <Link
                 className="nav-link"
                 to={`/${item.route}`}
-                onMouseDown={this.setSelected.bind(this, item.title)}
+                onMouseDown={() => this.setSelected(item.title)}
                 key={i}
               >
                 <li
@@ -92,7 +92,7 @@ class NavBar extends Component {
                     "nav-item " +
                     (item.title === this.state.selected ? "selected-page" : "")
                   }
-                  onMouseDown={this.setSelected.bind(this, item.title)}
+                  onMouseDown={() => this.setSelected(item.title)}
                 >
                   {item.title}
                 </li>

@@ -1,7 +1,9 @@
 .Home
   width: 100%
   display: flex
-  justify-content: flex-end
+  justify-content: center
+  @media all and (max-width: 1200px)
+    justify-content: flex-end
   align-items: center
   flex-direction: column
   background: transparent
@@ -63,16 +65,17 @@
       text-transform: lowercase
     .search-button
       font-family: 'Avenir', Futura, Helvetica, sans-serif
-      background: #619261
+      border: 3px solid white
       padding: 10px 30px
-      border-radius: 15px
       color: white
       font-weight: 900
-      box-shadow: 0px 5px 10px 0px #58444447
+      box-shadow: 0px 5px 20px 0px #58444447
       margin-bottom: 20px
       cursor: pointer
+      transition: 0.15s ease
     .search-button:hover
       background: #eca874
+      border-color: #eca874
     .advanced-search
       margin: 20px 0
       .advanced-search-filter

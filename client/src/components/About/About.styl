@@ -1,18 +1,18 @@
 .About
   width: 100%
-  display: flex
-  justify-content: center
-  align-items: center
-  flex-direction: column
-  margin-top: 100px
+  height: -max-width;
+  overflow-y: scroll
   z-index: 1
   position: absolute
-  top: 60px
-  overflow-y: scroll
+  top: 100px
+  padding: 0 150px
   box-sizing: border-box
+  display: flex
+  align-items: flex-end
+  flex-direction: column
   -webkit-overflow-scrolling: touch
   @media all and (max-width: 1200px)
-    padding-top: 180px
+    padding: 0 20px
   video
     position: absolute
     pointer-events: none
@@ -25,11 +25,16 @@
     color: white
     padding: 15px 0
   > p
-    text-align: center
+    text-align: right
+    width: 50%
+    @media all and (max-width: 1200px)
+      width: 90%
 
   .v2
-    width: 50%
-    margin: 50px 0
+    width: 100%
+    margin: 25px 0
+    @media all and (max-width: 1200px)
+      margin: 0
     .developers
       display: grid
       grid-template-columns: repeat(3, 1fr)
@@ -52,8 +57,10 @@
           color: #e4cdcd
 
   .v1
-    width: 50%
-    margin: 50px 0
+    width: 100%
+    margin: 25px 0
+    @media all and (max-width: 1200px)
+      margin: 0
     .developers
       display: grid
       grid-template-columns: repeat(5, 1fr)

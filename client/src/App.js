@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Course from "./components/Course/Course";
 import Results from "./components/Results/Results";
@@ -8,7 +8,7 @@ import Layout from "./layout/Layout";
 import Data from "./data/filters.json";
 import "./styl/main.styl";
 
-import history from "./history";
+// import history from "./history";
 
 class App extends Component {
   constructor(props) {
@@ -275,7 +275,7 @@ class App extends Component {
     const { courseSearchResults, ...rest } = this.state;
     return (
       <div className="App">
-        <Router history={history}>
+        <BrowserRouter>
           <Layout width={this.state.width} height={this.state.height}>
             <Switch>
               <Route
@@ -339,7 +339,7 @@ class App extends Component {
               />
             </Switch>
           </Layout>
-        </Router>
+        </BrowserRouter>
       </div>
     );
   }

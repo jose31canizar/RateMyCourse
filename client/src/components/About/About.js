@@ -39,7 +39,12 @@ export default class About extends Component {
         style={{ height: this.props.height - 100 }}
       >
         <h2>About Us</h2>
-        <p>RateMyCourse is a collaborative project based in Boulder, CO.</p>
+        <p>
+          At last, a tool for finding better classes. RateMyCourse is a
+          collaborative project based in Boulder, CO. Search by any combination
+          of course subject, number, and year to find course ratings from
+          previous semesters.{" "}
+        </p>
         <div className="v2">
           <h2>RateMyCourse 2.0</h2>
           <div className="developers">
