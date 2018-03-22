@@ -2,15 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { createLogger } from "redux-logger";
 import { Provider } from "react-redux";
-import reducer from "./reducers";
+import reducer from "./reducers/searchCourse";
+
+const logger = createLogger();
 
 document.addEventListener("touchmove", function(event) {
   event.preventDefault();
 });
 
-const store = createStore(reducer, { loggedIn: false });
+const store = createStore(reducer, {}, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>
@@ -18,7 +22,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-{
-  /* registerServiceWorker(); */
-}

@@ -2,24 +2,29 @@ import React, { Component } from "react";
 import "./Results.styl";
 import SVG from "../svg.js";
 import { RingLoader } from "react-spinners";
+import { connect } from "react-redux";
 
-export default class Results extends Component {
+const mapStateToProps = state => {
+  return {
+    results: state.results,
+    loading: state.loading
+  };
+};
+class Results extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      results: this.props.courseSearchResults
-    };
     this.goToCourse = this.goToCourse.bind(this);
     this.getYear = this.getYear.bind(this);
     this.findAverageHours = this.findAverageHours.bind(this);
     this.findAverageGrade = this.findAverageGrade.bind(this);
     this.displayQuery = this.displayQuery.bind(this);
   }
-  componentWillReceiveProps(props) {
-    this.setState({ results: props.courseSearchResults });
+  componentWillReceiveProps(newProps) {
+    console.log("new results");
+    console.log(newProps);
   }
   goToCourse(i) {
-    const data = this.state.results[i];
+    const data = this.props.results[i];
     this.props.setCourseData(data);
     this.props.history.push("course");
   }
@@ -135,8 +140,8 @@ export default class Results extends Component {
         <h1>
           Results for {this.props.firstQuery ? this.displayQuery() : "..."}
         </h1>
-        {this.state.results ? (
-          this.state.results.map((course, i) => (
+        {this.props.results ? (
+          this.props.results.map((course, i) => (
             <div
               className="course-cell"
               onMouseDown={this.goToCourse.bind(this, i)}
@@ -166,9 +171,11 @@ export default class Results extends Component {
             </div>
           ))
         ) : (
-          <RingLoader color={"#123abc"} loading={this.state.loading} />
+          <RingLoader color={"#123abc"} loading={this.props.loading} />
         )}
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps)(Results);

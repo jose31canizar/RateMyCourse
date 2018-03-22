@@ -1,15 +1,39 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import Home from "./components/Home/Home";
 import Course from "./components/Course/Course";
 import Results from "./components/Results/Results";
 import About from "./components/About/About";
 import Layout from "./layout/Layout";
 import Data from "./data/filters.json";
+import {
+  searchCourse,
+  searchCoursesBySubjectAndNumber,
+  searchCoursesBySubjectAndYear,
+  searchCoursesByYearAndNumber
+} from "./actions/searchCourse";
 import "./styl/main.styl";
 
-// import history from "./history";
-
+const mapStateToProps = state => {
+  return {};
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    searchCourse: queryObject => {
+      dispatch(searchCourse(queryObject));
+    },
+    searchCoursesBySubjectAndNumber: queryObject => {
+      dispatch(searchCoursesBySubjectAndNumber(queryObject));
+    },
+    searchCoursesBySubjectAndYear: queryObject => {
+      dispatch(searchCoursesBySubjectAndYear(queryObject));
+    },
+    searchCoursesByYearAndNumber: queryObject => {
+      dispatch(searchCoursesByYearAndNumber(queryObject));
+    }
+  };
+};
 class App extends Component {
   constructor(props) {
     super(props);
@@ -40,16 +64,6 @@ class App extends Component {
     this.toggleCheckmark = this.toggleCheckmark.bind(this);
 
     this.handleQuery = this.handleQuery.bind(this);
-    this.searchCourse = this.searchCourse.bind(this);
-    this.searchForCoursesWithSubjectAndNumber = this.searchForCoursesWithSubjectAndNumber.bind(
-      this
-    );
-    this.searchForCoursesWithSubjectAndYear = this.searchForCoursesWithSubjectAndYear.bind(
-      this
-    );
-    this.searchForCoursesWithYearAndNumber = this.searchForCoursesWithYearAndNumber.bind(
-      this
-    );
     this.navigateToCourse = this.navigateToCourse.bind(this);
     this.setCourseData = this.setCourseData.bind(this);
   }
@@ -150,29 +164,54 @@ class App extends Component {
       this.state.courseNumber &&
       this.state.courseYear
     ) {
-      this.searchCourse();
+      this.props.searchCourse({
+        subject: this.state.courseSubject,
+        number: this.state.courseNumber,
+        year: this.state.courseYear
+      });
       //go to results page
     } else if (this.state.courseSubject && this.state.courseNumber) {
-      this.setState({
-        firstQuery: this.state.courseSubject,
-        secondQuery: this.state.courseNumber
-      });
-      this.searchForCoursesWithSubjectAndNumber();
+      this.setState(
+        {
+          firstQuery: this.state.courseSubject,
+          secondQuery: this.state.courseNumber
+        },
+        () => {
+          this.props.searchCoursesBySubjectAndNumber({
+            subject: this.state.courseSubject,
+            number: this.state.courseNumber
+          });
+        }
+      );
     } else if (this.state.courseSubject && this.state.courseYear) {
-      this.setState({
-        firstQuery: this.state.courseYear,
-        secondQuery: this.state.courseSubject
-      });
-      this.searchForCoursesWithSubjectAndYear();
+      this.setState(
+        {
+          firstQuery: this.state.courseYear,
+          secondQuery: this.state.courseSubject
+        },
+        () => {
+          this.props.searchCoursesBySubjectAndYear({
+            subject: this.state.courseSubject,
+            year: this.state.courseYear
+          });
+        }
+      );
     } else if (this.state.courseNumber && this.state.courseYear) {
-      this.setState({
-        firstQuery: this.state.courseYear,
-        secondQuery: this.state.courseNumber
-      });
-      this.searchForCoursesWithYearAndNumber();
+      this.setState(
+        {
+          firstQuery: this.state.courseYear,
+          secondQuery: this.state.courseNumber
+        },
+        () => {
+          this.props.searchCoursesByYearAndNumber({
+            year: this.state.courseYear,
+            number: this.state.courseNumber
+          });
+        }
+      );
     } else {
       this.setState({
-        warning: "Please enter more info."
+        warning: "We'll need a bit more info for that query."
       });
     }
     return false;
@@ -181,95 +220,6 @@ class App extends Component {
     this.setState({
       ...data
     });
-  };
-  searchCourse = () => {
-    fetch(
-      "/api/course?subject=" +
-        this.state.courseSubject +
-        "&number=" +
-        this.state.courseNumber +
-        "&year=" +
-        this.state.courseYear
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        this.setState({
-          gradesA: json.gradesA,
-          gradesB: json.gradesB,
-          gradesC: json.gradesC,
-          gradesDF: json.gradesDF,
-          averageGrade: json.averageGrade,
-          averageHours: json.averageHours,
-          courseRating: json.courseRating,
-          avgCourseRating: json.avgCourseRating,
-          courseSearchResults: null
-        });
-      })
-      .catch(function(res) {
-        console.log("there was an error");
-        console.log(res);
-      });
-  };
-  searchForCoursesWithSubjectAndNumber = () => {
-    fetch(
-      "/api/coursenumbersubject?subject=" +
-        this.state.courseSubject +
-        "&number=" +
-        this.state.courseNumber
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        this.setState({
-          courseSearchResults: json
-        });
-      })
-      .catch(function(res) {
-        console.log("there was an error");
-        console.log(res);
-      });
-  };
-  searchForCoursesWithSubjectAndYear = () => {
-    fetch(
-      "/api/coursesubjectyear?&year=" +
-        this.state.courseYear +
-        "&subject=" +
-        this.state.courseSubject
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        this.setState({
-          courseSearchResults: json
-        });
-      })
-      .catch(function(res) {
-        console.log(res);
-      });
-  };
-  searchForCoursesWithYearAndNumber = () => {
-    fetch(
-      "/api/courseyearnumber?&number=" +
-        this.state.courseNumber +
-        "&year=" +
-        this.state.courseYear
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        this.setState({
-          courseSearchResults: json
-        });
-      })
-      .catch(function(res) {
-        console.log("there was an error");
-        console.log(res);
-      });
   };
   render() {
     const { courseSearchResults, ...rest } = this.state;
@@ -306,7 +256,6 @@ class App extends Component {
                   <Results
                     firstQuery={this.state.firstQuery}
                     secondQuery={this.state.secondQuery}
-                    courseSearchResults={this.state.courseSearchResults}
                     setCourseData={this.setCourseData}
                     history={history}
                     handleQuery={this.handleQuery}
@@ -345,4 +294,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

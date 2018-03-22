@@ -1,12 +1,8 @@
-const defaultState = {};
+import { combineReducers } from "redux";
+import { reducer } from "./searchCourse";
+// import { reducer as secondReducer } from "./secondReducer";
 
-const reducer = (state = defaultState, action) => {
-  switch (action.type) {
-    case "SEARCH_COURSE":
-      return {};
-    default:
-      return defaultState;
-  }
-};
-
-export default reducer;
+const rootReducer = combineReducers({
+  reducer
+});
+export default rootReducer;

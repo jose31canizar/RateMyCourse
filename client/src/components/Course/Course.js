@@ -2,7 +2,17 @@ import React, { Component } from "react";
 import "./Course.styl";
 import SVG from "../svg.js";
 import Graph from "../Graph/Graph";
+import { connect } from "react-redux";
+import { RingLoader } from "react-spinners";
 
+const mapStateToProps = state => {
+  return {
+    ...state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {};
+};
 class Course extends Component {
   constructor(props) {
     super(props);
@@ -14,12 +24,18 @@ class Course extends Component {
     this.findAverageGrade = this.findAverageGrade.bind(this);
     this.ratingBar = this.ratingBar.bind(this);
   }
+  componentWillReceiveProps(newProps) {
+    console.log("new props");
+    console.log(newProps);
+  }
   componentDidMount() {
-    // document
-    //   .getElementById("course-page")
-    //   .addEventListener("touchmove", function(event) {
-    //     event.stopPropagation();
-    //   });
+    console.log("course page mounted");
+    console.log(this.props);
+    document
+      .getElementById("course-page")
+      .addEventListener("touchmove", function(event) {
+        event.stopPropagation();
+      });
 
     document
       .getElementById("course-page")
@@ -112,32 +128,37 @@ class Course extends Component {
     var props = this.props;
     return (
       <div className="Course" id="course-page">
-        <div className="results-container">
-          <h1>
-            {props.courseSubject.toUpperCase() + " " + props.courseNumber}
-          </h1>
-          <div className="course-rating">
-            <h2>Course Rating</h2>
-            {this.ratingBar(this.props.courseRating)}
+        {this.props.courseRating ? (
+          <div className="results-container">
+            <h1>
+              {props.courseSubject.toUpperCase() + " " + props.courseNumber}
+            </h1>
+
+            <div className="course-rating">
+              <h2>Course Rating</h2>
+              {this.ratingBar(this.props.courseRating)}
+            </div>
+            <div className="course-rating">
+              <h2>Average Course Rating</h2>
+              {this.ratingBar(this.props.avgCourseRating)}
+            </div>
+            <h2>A's: {parseFloat(props.gradesA).toFixed(2)}%</h2>
+            <h2>B's: {parseFloat(props.gradesB).toFixed(2)}%</h2>
+            <h2>C's: {parseFloat(props.gradesC).toFixed(2)}%</h2>
+            <h2>D's or worse: {parseFloat(props.gradesDF).toFixed(2)}%</h2>
+            <h2>Average Grade: {this.findAverageGrade()}</h2>
+            <h2>Average Hours: {this.findAverageHours()}</h2>
+            <Graph
+              labels={["0", "1-3", "4-6", "7-9", "10-12", "13-15", "16+"]}
+              amount={this.props.averageHours}
+            />
           </div>
-          <div className="course-rating">
-            <h2>Average Course Rating</h2>
-            {this.ratingBar(this.props.avgCourseRating)}
-          </div>
-          <h2>A's: {parseFloat(props.gradesA).toFixed(2)}%</h2>
-          <h2>B's: {parseFloat(props.gradesB).toFixed(2)}%</h2>
-          <h2>C's: {parseFloat(props.gradesC).toFixed(2)}%</h2>
-          <h2>D's or worse: {parseFloat(props.gradesDF).toFixed(2)}%</h2>
-          <h2>Average Grade: {this.findAverageGrade()}</h2>
-          <h2>Average Hours: {this.findAverageHours()}</h2>
-        </div>
-        <Graph
-          labels={["0", "1-3", "4-6", "7-9", "10-12", "13-15", "16+"]}
-          amount={2}
-        />
+        ) : (
+          <RingLoader color={"#123abc"} loading={this.state.loading} />
+        )}
       </div>
     );
   }
 }
 
-export default Course;
+export default connect(mapStateToProps, mapDispatchToProps)(Course);
